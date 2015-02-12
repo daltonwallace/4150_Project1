@@ -1,0 +1,189 @@
+<html>
+<head>
+<title>CS 4150 - Project 1</title>
+<style type="text/css">
+#projectInfo
+{
+	width: auto;
+	padding: 10px;
+	border: 1px solid #777;
+	background-color: #ddd;
+	margin-bottom: 20px;
+}
+#projectInfo .info
+{
+	display: inline-block;
+	min-width: 100px;
+	text-align: right;
+	margin-right: 5px;
+}
+textarea 
+{
+	width: 100%;
+}
+
+textarea[readonly]
+{
+	background-color: #eee;
+}
+
+.hiddenInput 
+{
+	border-width: 0px;
+}
+</style>
+<script src="project1.js"></script>
+<script type="text/javascript">
+<!--
+var timer = {
+	startTime: 0,
+	start: function () {
+		var d = new Date();
+		this.startTime = d.getTime();
+	},
+	checkTime: function () {
+		var d = new Date();
+		return d.getTime() - this.startTime;
+	}
+};
+function RandomNumber(textarea) {
+	var str = "0123456789";
+	var t = document.getElementById(textarea);
+	if (t) {
+		var n = parseInt(document.getElementById('numberLength').value);
+		var inc = parseInt(document.getElementById('numberLengthInc').value);
+		n += Math.floor(Math.random() * inc*2) - inc;
+		var s = "";
+		for (i = 0; i < n; i++) {
+			s += str.charAt(Math.floor(Math.random() * 10));
+		}
+		t.value = s;
+	}
+}
+function NewNumbers() {
+	RandomNumber('number1');
+	RandomNumber('number2');
+}
+function Init() {
+	if (typeof GetName != 'function' || typeof GetUNID != 'function') {
+		alert('You must implement the javascript functions GetName() and GetUNID() in the "project1.js" file. They should return your full name and uNID, respectively.');
+	} else {
+		document.getElementById('name').value = GetName();
+		document.getElementById('unid').value = GetUNID();
+	}
+	NewNumbers();
+	if (typeof GetOptimalBlendedThreshold == 'function') {
+		document.getElementById('bmThreshold').value = GetOptimalBlendedThreshold();
+	}
+}
+function CallAddGS() {
+	if (typeof GradeSchoolAdd != 'function') {
+		alert('You must implement the javascript function GradeSchoolAdd(x,y) in the "project1.js" file.');
+		return;
+	}
+	var x = document.getElementById('number1').value;
+	var y = document.getElementById('number2').value;
+	timer.start();
+	var sum = GradeSchoolAdd(x, y);
+	var t = timer.checkTime();
+	document.getElementById('timeadd').value = '(' + t + ' ms)';
+	document.getElementById('addgs').value = sum;
+}
+function CallMultiplyGS() {
+	if (typeof GradeSchoolMultiply != 'function') {
+		alert('You must implement the javascript function GradeSchoolMultiply(x,y) in the "project1.js" file.');
+		return;
+	}
+	var x = document.getElementById('number1').value;
+	var y = document.getElementById('number2').value;
+	timer.start();
+	var m = GradeSchoolMultiply(x, y);
+	var t = timer.checkTime();
+	document.getElementById('timegs').value = '(' + t + ' ms)';
+	document.getElementById('multgs').value = m;
+}
+function CallMultiplyK() {
+	if (typeof KaratsubasMultiply != 'function') {
+		alert('You must implement the javascript function KaratsubasMultiply(x,y) in the "project1.js" file.');
+		return;
+	}
+	var x = document.getElementById('number1').value;
+	var y = document.getElementById('number2').value;
+	timer.start();
+	var m = KaratsubasMultiply(x, y);
+	var t = timer.checkTime();
+	document.getElementById('timek').value = '(' + t + ' ms)';
+	document.getElementById('multk').value = m;
+}
+function CallMultiplyB() {
+	if (typeof BlendedMultiply != 'function') {
+		alert('You must implement the javascript function BlendedMultiply(x,y,threshold) in the "project1.js" file.');
+		return;
+	}
+	var x = document.getElementById('number1').value;
+	var y = document.getElementById('number2').value;
+	var threshold = document.getElementById('bmThreshold').value;
+	timer.start();
+	var m = BlendedMultiply(x, y, threshold);
+	var t = timer.checkTime();
+	document.getElementById('timeb').value = '(' + t + ' ms)';
+	document.getElementById('multb').value = m;
+}
+function GetOptimalValue() {
+	if (typeof GetOptimalBlendedThreshold != 'function') {
+		alert('You must implement the javascript function GetOptimalBlendedThreshold() in the "project1.js" file.');
+		return;
+	}
+	document.getElementById('bmThreshold').value = GetOptimalBlendedThreshold();
+}
+function RunAll() {
+	GetOptimalValue();
+	CallAddGS();
+	CallMultiplyGS();
+	CallMultiplyK();
+	CallMultiplyB();
+}
+-->
+</script>
+</head>
+<body onload="Init()">
+<div id="projectInfo">
+<b>CS 4150 - Project 1</b>
+<span class="info">Name:</span><input id="name" />
+<span class="info">nNID:</span><input id="unid" />
+</div>
+
+Number length: <input type="number" id="numberLength" value="1000" />
+&plusmn; <input type="number" id="numberLengthInc" value="2" />
+<br /><br />
+
+Number 1: <input type="button" value="Randomize" onclick="RandomNumber('number1')" /><br />
+<textarea name="number1" id="number1" rows="2"></textarea><br />
+<br />
+Number 2: <input type="button" value="Randomize" onclick="RandomNumber('number2')" /><br />
+<textarea name="number2" id="number2" rows="2"></textarea><br />
+<br />
+Grade School Add: <input type="text" id="timeadd" class="hiddenInput" /><br />
+<textarea name="addgs" id="addgs" rows="2" readonly></textarea><br />
+<br />
+Grade School Multiply: <input type="text" id="timegs" class="hiddenInput" /><br />
+<textarea name="multgs" id="multgs" rows="2" readonly></textarea><br />
+<br />
+Karatsuba's Multiply: <input type="text" id="timek" class="hiddenInput" /><br />
+<textarea name="multk" id="multk" rows="2" readonly></textarea><br />
+<br />
+Blended Multiply: <input type="text" id="timeb" class="hiddenInput" /><br />
+<textarea name="multb" id="multb" rows="2" readonly></textarea><br />
+<br />
+<input type="button" value="Grade School Add" onclick="CallAddGS()" />
+<input type="button" value="Grade School Multiply" onclick="CallMultiplyGS()" />
+<input type="button" value="Karatsuba's Multiply" onclick="CallMultiplyK()" />
+<input type="button" value="Blended Multiply" onclick="CallMultiplyB()" />
+<br />
+Blended Multiply Threshold: <input type="number" id="bmThreshold" value="100" />
+<input type="button" value="Get Optimal Value" onclick="GetOptimalValue()" />
+<br />
+<input type="button" value="New Numbers" onclick="NewNumbers()" />
+<input type="button" value="Run All" onclick="RunAll()" />
+</body>
+</html>
